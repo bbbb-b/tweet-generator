@@ -8,11 +8,11 @@ import sys
 from markov_node import MarkovNode
 
 def init_args():
-	global config_file, account_name, tweet_interval
+	global auth_file, account_name, tweet_interval
 	if len(sys.argv) != 4:
-		sys.exit(f"{sys.argv[0]} <account-name> <config-file> <tweet-interval>")
+		sys.exit(f"{sys.argv[0]} <account-name> <auth-file> <tweet-interval>")
 	account_name = sys.argv[1]
-	config_file = sys.argv[2]
+	auth_file = sys.argv[2]
 	try:
 		tweet_interval = float(sys.argv[3])
 	except ValueError:
@@ -20,15 +20,12 @@ def init_args():
 
 def connect():
 	try:
-		config = json.load(open(config_file))
-	except:
-		sys.exit(f"Cannot parse config file ${config_file}")
-	try:
-		api = twitter.Api(**config)
+		auth = json.load(open(auth_file))
+		api = twitter.Api(**auth)
 		api.GetFriends()
 		return api
 	except:
-		sys.exit(f"Invalid credentials")
+		sys.exit(f"Invalid auth file")
 
 def filter_text(tweet_text): # array of arrays of valid
 	valid_text = MarkovNode.valid_text

@@ -1,0 +1,12 @@
+[Unit]
+Description=Tweet generator and tweeter based on another account
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirectory=%h/Services/tweet-generator
+ExecStart=/usr/bin/env python3 -u main.py twitter auth.json 600
+
+[Install]
+WantedBy=default.target
